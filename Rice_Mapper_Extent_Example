@@ -78,16 +78,21 @@ var LS_TOA_indices = Rice_Extent_Mapper.calculateTasseledCap.calculateTasseledCa
 Map.addLayer(LS_TOA_indices,{}, "LS_TOA_indices",false)
 ////
 
-var s1_refinedLee = Rice_Extent_Mapper.S1_TC_LEE_Processing.refindedLee_IC(s1_of_intrest, ROI).median()
-print("s1_refinedLee", s1_refinedLee)
-Map.addLayer(s1_refinedLee,{min:-25,max:20}, "s1_refinedLee",false)
+// var s1_refinedLee = Rice_Extent_Mapper.S1_TC_LEE_Processing.refinedLee_IC(s1_of_intrest, ROI).median()
+// print("s1_refinedLee", s1_refinedLee)
+// Map.addLayer(s1_refinedLee,{min:-25,max:20}, "s1_refinedLee",false)
+// ////
+// var s1_terrainCorrection = Rice_Extent_Mapper.S1_TC_LEE_Processing.terrainCorrection(s1_of_intrest, ROI).median()
+// print("s1_terrainCorrection", s1_terrainCorrection)
+// Map.addLayer(s1_terrainCorrection,{min:-25,max:20}, "s1_terrainCorrection",false)
 ////
-var s1_terrainCorrection = Rice_Extent_Mapper.S1_TC_LEE_Processing.terrainCorrection(s1_of_intrest, ROI).median()
-print("s1_terrainCorrection", s1_terrainCorrection)
-Map.addLayer(s1_terrainCorrection,{min:-25,max:20}, "s1_terrainCorrection",false)
+var s1_TC_LEE = Rice_Extent_Mapper.S1_TC_LEE_Processing.TC_LEE(s1_of_intrest, ROI).median()
+print("s1_TC_LEE", s1_TC_LEE)
+Map.addLayer(s1_TC_LEE,{min:-25,max:20}, "s1_TC_LEE",false)
+
 
 ////
-var All_Imagery = LS8_indices.addBands([S2_indices, LS_TOA_indices, s1_refinedLee, s1_terrainCorrection])
+var All_Imagery = LS8_indices.addBands([S2_indices, LS_TOA_indices, s1_TC_LEE])//s1_refinedLee, s1_terrainCorrection,
 var bands = All_Imagery.bandNames().getInfo()
 print("bands", bands)
 
@@ -122,3 +127,14 @@ var Random_Forest_Output_rice = Random_Forest_Output.eq(1)
 var Random_Forest_Output_rice_only = Random_Forest_Output_rice.updateMask(Random_Forest_Output);
 
 Map.addLayer(Random_Forest_Output_rice_only,{min: 0, max: 1, palette: palette1}, "Random_Forest_Output_rice_only")
+
+//////////////
+////
+////  Connected Pixels
+////
+//////////////
+var mmu = 10
+var connectedPixels = Random_Forest_Output_rice_only.connectedPixelCount(mmu,false)
+
+connectedPixels= connectedPixels.updateMask(connectedPixels.gte(mmu))
+Map.addLayer(connectedPixels, {palette: "blue"}, "connectedPixels")

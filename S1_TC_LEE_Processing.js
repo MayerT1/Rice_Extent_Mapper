@@ -1,5 +1,5 @@
 
-function terrainCorrection(ImageCollection, ROI){
+function TC_LEE(ImageCollection, ROI){
   var terrainCorrection_IC = ImageCollection.map(function(image){ 
         var imgGeom = image.geometry();
         var srtm = ee.Image('USGS/SRTMGL1_003').clip(imgGeom); // 30m srtm 
@@ -82,7 +82,7 @@ function dbToPower(img){
 /////////////////////////////////////////////////
 // The RL speckle filter
 
-function refindedLee_IC(ImageCollection, ROI){
+function refinedLee_IC(terrainCorrection_IC, ROI){
 
           function refinedLee(image) {
             
@@ -190,11 +190,21 @@ function refindedLee_IC(ImageCollection, ROI){
             })).toBands().rename(bandNames);
             return powerToDb(ee.Image(result)).clip(ROI);
           }
-  var refindedLee_IC_out = ImageCollection.map(refinedLee)
-  return refindedLee_IC_out
+  var refinedLee_IC_out = ImageCollection.map(refinedLee)
+  return refinedLee_IC_out
 }
+/////////////
+// function TC_LEE(image){
+//   var terrainCorrection_out = ee.Image(terrainCorrection(image))
+//   var s1_refinedLee_out = ee.Image(terrainCorrection_out)
+//   return ee.Image(s1_refinedLee_out)
+// }
 
 
-exports.terrainCorrection = terrainCorrection
-exports.refindedLee_IC = refindedLee_IC
-  
+
+
+
+
+// exports.terrainCorrection = terrainCorrection
+// exports.refinedLee_IC = refinedLee_IC
+exports.TC_LEE = TC_LEE
