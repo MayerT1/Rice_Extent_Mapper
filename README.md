@@ -2,8 +2,6 @@
 ![](Rice_Extent_Mapper.jpg)
 Rice_Extent_Mapper GEE Tool
 
-![](Rice_Extent_Mapper.jpg)
-
 
 A Javascript tool set that utilizes the 
 GEE platform to automatically construct phenologcally 
