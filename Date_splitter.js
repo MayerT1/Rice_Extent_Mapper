@@ -1,6 +1,6 @@
 
-function Date_splitter (ImageCollection,Month_range1, Month_range2, Year_Range1, Year_Range2){
-          var Selected_Month_Year_IC = ee.ImageCollection(ImageCollection.filter(ee.Filter.calendarRange(Month_range1,Month_range2,'month')).filter(ee.Filter.calendarRange(Year_Range1,Year_Range2,'year')))
+function Date_splitter (ImageCollection,Month_range1, Month_range2, Year_Range1, Year_Range2, ROI){
+          var Selected_Month_Year_IC = ee.ImageCollection(ImageCollection.filter(ee.Filter.calendarRange(Month_range1,Month_range2,'month')).filter(ee.Filter.calendarRange(Year_Range1,Year_Range2,'year'))).filterBounds(ROI)
      return Selected_Month_Year_IC
 }
 

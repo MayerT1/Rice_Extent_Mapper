@@ -1,0 +1,66 @@
+//https://gis.stackexchange.com/questions/307115/earth-engine-get-dates-from-imagecollection
+
+var ROI = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017")
+  .filter(ee.Filter.eq('country_na','Bhutan'));
+
+var LS8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+            .filterBounds(ROI)
+            .filterDate('2015-05-01', '2015-11-01')
+Map.addLayer(LS8, {}, "LS8")
+
+var dates = LS8
+    .map(function(image) {
+      return ee.Feature(null, {'date': image.date().format('YYYY-MM-dd')})
+    })
+    .distinct('date')
+    .aggregate_array('date')
+    print(dates)
+
+
+///
+// var tobe_zip_dates = ee.List(['2015-05-31', '2015-06-30', '2015-07-31', '2015-08-31', '2015-09-30', '2015-10-31'])
+// //var zipped_dates = tobe_zip_dates.zip(dates)
+// var zipped_dates = dates.zip(tobe_zip_dates)
+// print("zipped_dates", zipped_dates)
+
+
+
+////////////////////////////////////////////////////////
+    
+////////////////////////
+
+//dates = s1_collection_f.aggregate_array("system:time_start")
+
+// var dates = s1_collection
+//     .reduceColumns(ee.Reducer.toList(), ["system:time_start"])
+//     .get('list')
+
+
+// var dates = LS8
+//     .map(function(image) {
+//       return ee.Feature(null, {'date': image.date().format('YYYY-MM-dd')})
+//     })
+//     .distinct('date')
+//     .aggregate_array('date')
+//     print(dates)
+    
+    
+    
+///////////////////
+// var START = '2020-05-01'
+// var END = '2020-09-15'
+
+// var DATES = ['2020-05-16', '2020-05-31', '2020-06-01', '2020-06-16']
+// //var DATES = ['2010-08-01', '2010-08-12', '2010-09-01']
+
+// var addTime = function(x) {
+//   return x.set('Date', ee.Date(x.get('system:time_start')).format("YYYY-MM-dd"))}
+  
+// var LS8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+//             .filter(ee.Filter.date(START, END))
+//             .map(addTime)
+//             .filter(ee.Filter.inList('Date',ee.List(DATES)))
+//             .filterBounds(ROI)
+// print("LS8",LS8.size())
+
+// Map.addLayer(LS8, {}, "LS8", false)
