@@ -8,6 +8,6 @@ GEE platform to automatically construct phenologcally
 relivant indices as feature inouts for a Random Forest
 modeling framework to delinate rice area. This use case is built for the kingdom of Bhutan.
 
-The [Rice_Mapper_Extent_Example Script](https://code.earthengine.google.com/75456bbf8826c460bcbf9316ec4c3d95) is a working example that uses all of the individual modules to produce a Rice classification
+The [Rice_Mapper_Extent_Example Script](https://code.earthengine.google.com/922ab930c8e63d175bc48f70e773c357) is a working example that uses all of the individual modules to produce a Rice classification
 #
 ![](Bhutan_rice_image_1.jpg)
