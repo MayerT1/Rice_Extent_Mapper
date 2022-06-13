@@ -2,6 +2,7 @@ var optical_indices = require("users/tjm0042/Rice_Extent_Mapper:LS8_Optical_Expo
 var optical_indices_S2 = require("users/tjm0042/Rice_Extent_Mapper:S2_Optical_Export.js")
 var calculateTasseledCap = require("users/tjm0042/Rice_Extent_Mapper:TCAP_Optical_Export.js")
 var S1_TC_LEE_Processing = require("users/tjm0042/Rice_Extent_Mapper:S1_TC_LEE_Processing.js")
+var SRTM_optical_indices = require("users/tjm0042/Rice_Extent_Mapper:SRTM_Optical_Export.js")
 //
 var S1_Processing = require("users/tjm0042/Rice_Extent_Mapper:S1_Processing.js")
 //
@@ -17,6 +18,7 @@ exports.optical_indices = optical_indices
 exports.optical_indices_S2 = optical_indices_S2
 exports.calculateTasseledCap = calculateTasseledCap
 exports.S1_TC_LEE_Processing = S1_TC_LEE_Processing
+exports.srtm_optical_indices = SRTM_optical_indices
 //
 exports.S1_Processing = S1_Processing
 //
