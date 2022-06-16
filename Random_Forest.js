@@ -21,36 +21,7 @@ function f1_score(confusion_matrix){
   return ee.Array([[2]]).multiply(p.multiply(r)).divide(p.add(r))
 }
 
-function RandomForest (FeatureCollection,list, image, testing){
-  
-    // Roughly 70% training, 20% validation and 10% testing
-    
-    var split = 0.8;  
-    var training_testing_joint_set = FeatureCollection.filter(ee.Filter.lt('random', split)).randomColumn();
-    var validation_FeatureCollection = FeatureCollection.filter(ee.Filter.gte('random', split));
-    
-    split = 0.875;
-    var training_FeatureCollection = training_testing_joint_set.filter(ee.Filter.lt('random', split));
-    var testing_FeatureCollection = training_testing_joint_set.filter(ee.Filter.gte('random', split));
-    
-    print("training",training_FeatureCollection);
-    print("validation",validation_FeatureCollection);
-
-    // Make a Random Forest classifier and train it.
-
-    var classifier_train = ee.Classifier.smileRandomForest({
-      numberOfTrees:10,
-      // variablesPerSplit: ,
-      // minLeafPopulation:,
-      // bagFraction:,
-      // maxNodes:,
-      seed:7})
-        .setOutputMode('CLASSIFICATION').train({
-          features: training_FeatureCollection,
-          classProperty: label,
-          inputProperties: list,
-          subsamplingSeed: 7
-        });
+function RandomForest (classifier_train, training_FeatureCollection,testing_FeatureCollection,validation_FeatureCollection,list, image, testing){
 
     var dict_RF = classifier_train.explain();
     var variable_importance_RF = ee.Feature(null, ee.Dictionary(dict_RF).get('importance'));
@@ -68,6 +39,7 @@ function RandomForest (FeatureCollection,list, image, testing){
     print("chart_variable_importance_RF", chart_variable_importance_RF);
 
     var classified_RF_train = training_FeatureCollection.classify(classifier_train);
+    print(classified_RF_train)
 
     // Get a confusion matrix representing resubstitution accuracy.
     var trainMatrix = classified_RF_train.errorMatrix(label, 'classification');
@@ -90,7 +62,6 @@ function RandomForest (FeatureCollection,list, image, testing){
     print('RF_Validation_F1_score: ', f1_score(validationMatrix).get([0,0]));
     
     if (testing) {
-      print("testing",testing_FeatureCollection);
       var classified_RF_testing = testing_FeatureCollection.classify(classifier_train);
       var testMatrix = classified_RF_testing.errorMatrix(label, 'classification');
       print('RF_Testing_Resubstitution error matrix: ', testMatrix);
